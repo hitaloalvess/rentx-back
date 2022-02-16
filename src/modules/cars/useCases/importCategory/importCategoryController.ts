@@ -5,14 +5,14 @@ import { ImportCategoryUseCase } from './importCategoryUseCase';
 class ImportCategoryController {
   constructor(private importCategoryUseCase: ImportCategoryUseCase) {}
 
-  handle(request: Request, response: Response): Response {
+  async handle(request: Request, response: Response): Promise<Response> {
     const { file } = request;
 
     if (!file) {
       return response.json({ error: 'File is required' });
     }
 
-    this.importCategoryUseCase.execute(file);
+    await this.importCategoryUseCase.execute(file);
 
     return response.status(201).send();
   }
