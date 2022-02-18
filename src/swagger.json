@@ -127,7 +127,7 @@
                         "description": "Created"
                     },
                     "500": {
-                        "description": "Specification arleady exists"
+                        "description": "Specification already exists"
                     }
                 }
             }
