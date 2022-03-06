@@ -8,11 +8,10 @@ import CreateConnection from '@shared/infra/typeorm/index';
 
 let connection: Connection;
 
-describe('Create Category Controller', () => {
+describe('List Categories Controller', () => {
   beforeAll(async () => {
     connection = await CreateConnection();
     await connection.runMigrations();
-
     const id = uuid();
     const password = await hash('admin', 8);
 
@@ -27,15 +26,14 @@ describe('Create Category Controller', () => {
     await connection.close();
   });
 
-  it('should be able to create a new category', async () => {
+  it('should be able to list all categories', async () => {
     const responseCreateToken = await request(app).post('/sessions').send({
       email: 'admin@rentx.com',
       password: 'admin',
     });
 
     const { token } = responseCreateToken.body;
-
-    const responseCreateCategory = await request(app)
+    await request(app)
       .post('/categories')
       .send({
         name: 'Category Supertest',
@@ -45,27 +43,11 @@ describe('Create Category Controller', () => {
         Authorization: `Bearer ${token}`,
       });
 
-    expect(responseCreateCategory.status).toBe(201);
-  });
+    const responseListCategories = await request(app).get('/categories');
 
-  it('should not be able to create new category with name exists', async () => {
-    const responseCreateToken = await request(app).post('/sessions').send({
-      email: 'admin@rentx.com',
-      password: 'admin',
-    });
-
-    const { token } = responseCreateToken.body;
-
-    const responseCreateCategory = await request(app)
-      .post('/categories')
-      .send({
-        name: 'Category Supertest',
-        description: 'Category Supertest',
-      })
-      .set({
-        Authorization: `Bearer ${token}`,
-      });
-
-    expect(responseCreateCategory.status).toBe(400);
+    expect(responseListCategories.status).toBe(200);
+    expect(responseListCategories.body.length).toBe(1);
+    expect(responseListCategories.body[0]).toHaveProperty('id');
+    expect(responseListCategories.body[0].name).toEqual('Category Supertest');
   });
 });

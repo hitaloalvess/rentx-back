@@ -11,7 +11,7 @@ import { router } from './routes';
 
 const app = express();
 
-createConnection();
+createConnection('database');
 
 app.use(express.json());
 

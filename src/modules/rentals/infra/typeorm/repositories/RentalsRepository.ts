@@ -24,14 +24,11 @@ class RentalsRepository implements IRentalsRepository {
     user_id,
     expected_return_date,
   }: ICreateRentalDTO): Promise<Rental> {
-    const rental = new Rental();
-
-    Object.assign(rental, {
+    const rental = this.repository.create({
       car_id,
       user_id,
       expected_return_date,
     });
-
     this.repository.save(rental);
 
     return rental;
