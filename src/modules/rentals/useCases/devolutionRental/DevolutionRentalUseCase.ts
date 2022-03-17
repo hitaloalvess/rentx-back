@@ -3,14 +3,14 @@ import { Rental } from "@modules/rentals/infra/typeorm/entities/Rental";
 import { IRentalsRepository } from "@modules/rentals/respositories/IRentalsRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppError";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 interface IRequest{
     id: string;
     user_id: string;
 }
 
-
+@injectable()
 class DevolutionRentalUseCase{
     constructor(
         @inject('RentalsRepository')
