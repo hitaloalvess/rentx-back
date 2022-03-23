@@ -1,3 +1,5 @@
+import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository';
+import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider';
 import { AppError } from '../../../../shared/errors/AppError';
 import { ICreateUserDTO } from '../../dtos/ICreateUserDTO';
 import { UsersRepositoryInMemory } from '../../repositories/in-memory/UsersRepositoryInMemory';
