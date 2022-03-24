@@ -1,5 +1,5 @@
-import { UsersTokensRepository } from '@modules/accounts/infra/typeorm/repositories/UsersTokensRepository';
 import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository';
+import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository';
 import { resolve } from 'path';
 import { inject, injectable } from 'tsyringe';
 import { v4 as uuid } from 'uuid';
@@ -15,7 +15,7 @@ class SendForgotPasswordMailUseCase {
     private usersRepository: IUsersRepository,
 
     @inject('UsersTokensRepository')
-    private usersTokensRepository: UsersTokensRepository,
+    private usersTokensRepository: IUsersTokensRepository,
 
     @inject('DayjsDateProvider')
     private dateProvider: IDateProvider,
