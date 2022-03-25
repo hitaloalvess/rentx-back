@@ -3,6 +3,8 @@ import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepositor
 import { deleteFile } from '@utils/file';
 import { inject, injectable } from 'tsyringe';
 
+import { IStorageProvider } from '@shared/container/providers/StorageProvider/IStorageProvider';
+
 interface IRequest {
   user_id: string;
   avatar_file: string;
@@ -13,14 +15,19 @@ class UpdateUserAvatarUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider,
   ) {}
 
   async execute({ user_id, avatar_file }: IRequest): Promise<void> {
     const user = (await this.usersRepository.findById(user_id)) as User;
 
     if (user.avatar) {
-      await deleteFile(`./tmp/avatar/${user.avatar}`);
+      await this.storageProvider.delete(user.avatar, 'avatar'); // delete o avatar antigo, caso existir
     }
+
+    await this.storageProvider.save(avatar_file, 'avatar'); // adiciona em localhost o novo avatar
 
     user.avatar = avatar_file;
 
