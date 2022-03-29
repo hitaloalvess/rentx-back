@@ -20,7 +20,7 @@ class SendForgotPasswordMailUseCase {
     @inject('DayjsDateProvider')
     private dateProvider: IDateProvider,
 
-    @inject('EtherealProvider')
+    @inject('MailProvider')
     private etherealProvider: IMailProvider,
   ) {}
 
