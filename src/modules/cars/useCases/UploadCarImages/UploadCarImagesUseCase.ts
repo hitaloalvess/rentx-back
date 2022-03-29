@@ -2,6 +2,7 @@ import { ICarImagesRepository } from '@modules/cars/repositories/ICarImagesRepos
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { inject, injectable } from 'tsyringe';
 
+import { IStorageProvider } from '@shared/container/providers/StorageProvider/IStorageProvider';
 import { AppError } from '@shared/errors/AppError';
 
 interface IRequest {
@@ -17,6 +18,9 @@ class UploadCarImagesUseCase {
 
     @inject('CarsRepository')
     private carsRepository: ICarsRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider,
   ) {}
 
   async execute({ car_id, images_name }: IRequest): Promise<void> {
@@ -28,7 +32,7 @@ class UploadCarImagesUseCase {
 
     images_name.map(async image_name => {
       await this.carImagesRepository.create(car_id, image_name);
-      // ADICIONAR VALIDAÇÃO PARA NÃO DEIXAR QUE IMAGENS COM MESMO NOME SEJAM CADASTRADAS
+      await this.storageProvider.save(image_name, 'cars');
     });
   }
 }
